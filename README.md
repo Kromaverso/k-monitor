@@ -133,7 +133,7 @@ Everything stays on your PC. The only network listener is the local API for the 
 
 ## Get started
 
-**Install:** run `kMonitor_0.1.0_x64-setup.exe` (build it as below). It installs per user, without administrator rights, and offers to install PawnIO at the end (see below).
+**Install:** run `kMonitor_0.1.0_x64-setup.exe` (build it as below). It installs to `Program Files` (Windows asks for administrator once) and offers to install PawnIO at the end (see below).
 
 **Build from source** on Windows 10 or 11 with [Rust](https://rustup.rs/), [Node.js](https://nodejs.org/) 20 or newer and the WebView2 runtime (built into Windows 11):
 
@@ -156,7 +156,9 @@ Windows doesn't give the temperature or power of Ryzen processors to regular pro
 1. Install PawnIO, either from the kMonitor installer or from pawnio.eu.
 2. In **Settings → CPU sensors**, click **Turn on** and confirm the Windows prompt.
 
-kMonitor then registers a scheduled task that starts it as administrator at logon, so Windows doesn't ask again. Opening kMonitor normally hands over to that task. **Turn off** removes it.
+kMonitor then registers a scheduled task that starts it as administrator at logon, so Windows doesn't ask again. Opening kMonitor normally hands over to that task. **Turn off** removes it, and so does uninstalling.
+
+The task only ever starts a kMonitor under `Program Files`, which only administrators can change. A copy anywhere else could be swapped by any program running as you, so kMonitor refuses to turn on admin mode from there.
 
 Supported: AMD Ryzen, Zen 1 to Zen 5. Everything else in kMonitor works without PawnIO.
 
@@ -208,14 +210,17 @@ src-tauri/src/
 └── specs.rs             hardware inventory (WMI)
 streamdeck/              Stream Deck plugin
 tools/capture.mjs        renders the screenshots in docs/images
+tools/share-card.mjs     renders the shareable card example
+tools/render-icons.mjs   renders assets/icon.png and heart-icon.png from the SVGs
 ```
 
-To refresh the screenshots, run `npx vite` and then `node tools/capture.mjs en`. The pages run on sample data in the browser.
+To refresh the screenshots, run `npx vite` and then `node tools/capture.mjs en` and `node tools/share-card.mjs en`. The pages run on sample data in the browser, not on your PC's.
 
 ## Privacy
 
 - Nothing leaves your PC. There's no account, telemetry or update check.
-- The local API answers only on `127.0.0.1`, and can be turned off in Settings.
+- The local API answers only on `127.0.0.1` and only to local programs: it refuses any request from a web browser and any `Host` other than this PC, so websites can't read it or open kMonitor's windows. It can be turned off in Settings.
+- Admin mode runs only the copy in `Program Files` (see [CPU temperature](#cpu-temperature-and-power)).
 - The shareable card leaves out the PC name, network and serial numbers.
 
 ---

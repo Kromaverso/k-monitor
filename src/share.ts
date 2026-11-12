@@ -34,7 +34,7 @@ export function specLines(s: Specs): Line[] {
   // The discrete card first (most VRAM).
   gpus.sort((a, b) => (b.vram ?? 0) - (a.vram ?? 0));
   gpus.forEach((g, i) => {
-    lines.push({ key: `gpu${i}`, label: i === 0 ? t("Placa de vídeo") : t("Vídeo integrado"), value: clean(g.name), sub: g.vram ? `${gb(g.vram)} VRAM` : undefined, color: i === 0 ? "#bf5af2" : "#a78bfa" });
+    lines.push({ key: `gpu${i}`, label: i === 0 ? t("Placa de vídeo") : t("Vídeo integrado"), value: clean(g.name), sub: g.vram ? `${gb(g.vram)} VRAM` : undefined, color: i === 0 ? "#30d158" : "#8e8e93" });
   });
   const ram = arr(s.ram);
   if (ram.length) {
@@ -46,7 +46,7 @@ export function specLines(s: Specs): Line[] {
     lines.push({
       key: "ram", label: t("Memória"), value: `${gb(total)} ${type}`.trim(),
       sub: [same ? `${ram.length}×${gb(ram[0].bytes)}` : t("{n} pentes", { n: ram.length }), speed ? `${speed} MT/s` : "", maker && !/^unknown|^0+$/i.test(maker) ? maker : ""].filter(Boolean).join(" · "),
-      color: "#30d158",
+      color: "#d1d1d6",
     });
   }
   if (s.board?.product) {
@@ -85,27 +85,22 @@ export function specSvg(s: Specs, logo: string): string {
   const rowH = Math.min(64, (H - top - 70) / Math.max(1, lines.length));
   const rows = lines.map((l, i) => {
     const y = top + i * rowH;
-    const vSize = fit(l.value, 640, 26);
+    const vSize = fit(l.value, 610, 26);
     return `
     <circle cx="96" cy="${y + 15}" r="6" fill="${l.color}"/>
     <text x="120" y="${y + 22}" ${F} font-size="17" font-weight="600" fill="#8e8e93" letter-spacing=".3">${esc(l.label.toUpperCase())}</text>
-    <text x="330" y="${y + 23}" ${F} font-size="${vSize}" font-weight="700" fill="#f5f5f7">${esc(l.value)}</text>
-    ${l.sub ? `<text x="330" y="${y + 47}" ${F} font-size="${fit(l.sub, 760, 16)}" font-weight="500" fill="#98989f">${esc(l.sub)}</text>` : ""}`;
+    <text x="360" y="${y + 23}" ${F} font-size="${vSize}" font-weight="700" fill="#f5f5f7">${esc(l.value)}</text>
+    ${l.sub ? `<text x="360" y="${y + 47}" ${F} font-size="${fit(l.sub, 730, 16)}" font-weight="500" fill="#98989f">${esc(l.sub)}</text>` : ""}`;
   });
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <defs>
-    <radialGradient id="a" cx="18%" cy="12%" r="60%"><stop offset="0" stop-color="#1b4fd6" stop-opacity=".55"/><stop offset="1" stop-color="#1b4fd6" stop-opacity="0"/></radialGradient>
-    <radialGradient id="b" cx="92%" cy="95%" r="60%"><stop offset="0" stop-color="#9b3fe0" stop-opacity=".5"/><stop offset="1" stop-color="#9b3fe0" stop-opacity="0"/></radialGradient>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#64d2ff"/><stop offset=".55" stop-color="#5e8bff"/><stop offset="1" stop-color="#bf5af2"/></linearGradient>
   </defs>
-  <rect width="${W}" height="${H}" fill="#0e1016"/>
-  <rect width="${W}" height="${H}" fill="url(#a)"/>
-  <rect width="${W}" height="${H}" fill="url(#b)"/>
+  <rect width="${W}" height="${H}" fill="#16181d"/>
   <rect x="40" y="40" width="${W - 80}" height="${H - 80}" rx="32" fill="#ffffff" fill-opacity=".05" stroke="#ffffff" stroke-opacity=".12"/>
   <image href="${logo}" x="80" y="78" width="52" height="52"/>
   <text x="150" y="104" ${F} font-size="34" font-weight="800" fill="#f5f5f7" letter-spacing="-.5">${esc(t("Meu PC"))}</text>
   <text x="151" y="128" ${F} font-size="16" font-weight="500" fill="#8e8e93">${esc(t("Especificações"))}</text>
-  <rect x="80" y="${top - 20}" width="${W - 160}" height="2" rx="1" fill="url(#g)" opacity=".7"/>
+  <rect x="80" y="${top - 20}" width="${W - 160}" height="2" rx="1" fill="#ffffff" opacity=".12"/>
   ${rows.join("")}
   <text x="${W - 80}" y="${H - 64}" text-anchor="end" ${F} font-size="15" font-weight="600" fill="#636366">kMonitor</text>
 </svg>`;

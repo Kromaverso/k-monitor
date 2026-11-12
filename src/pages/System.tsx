@@ -92,7 +92,7 @@ export default function System({ m }: { m: Monitor }) {
             const isLive = g && (g.name === gp.name || gp.name.includes(g.name) || g.name.includes(gp.name));
             return (
               <section className="card" key={gp.name + i}>
-                <Head icon={BsGpuCard as unknown as typeof LuCpu} color="#bf5af2" title={gp.name} sub={gp.maker} />
+                <Head icon={BsGpuCard as unknown as typeof LuCpu} color="var(--gpu)" title={gp.name} sub={gp.maker} />
                 <div className="grid2">
                   <Rows rows={[
                     ["VRAM", gp.vram ? fmt.bytes(gp.vram, 0) : isLive ? fmt.bytes(g!.vramTotal, 0) : undefined],
@@ -114,7 +114,7 @@ export default function System({ m }: { m: Monitor }) {
           })}
 
           <section className="card">
-            <Head icon={LuMemoryStick} color="#30d158" title={t("{n} de memória", { n: fmt.bytes(ramTotal || live?.mem.total || 0, 0) })}
+            <Head icon={LuMemoryStick} color="var(--mem)" title={t("{n} de memória", { n: fmt.bytes(ramTotal || live?.mem.total || 0, 0) })}
               sub={`${t("{a} de {b} slots ocupados", { a: ram.length, b: spec.ramSlots ?? ram.length })}${ram[0]?.configuredMhz ? ` · ${ram[0].configuredMhz} MT/s` : ""}`} />
             <div className="sticks num">
               {ram.map((r, i) => (

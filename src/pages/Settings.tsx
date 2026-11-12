@@ -44,7 +44,7 @@ export default function Settings({ m }: { m: Monitor }) {
           </div>
           {status === "noDriver" && <button className="btn" onClick={() => api.openUrl("https://pawnio.eu")}>{t("Baixar PawnIO")}</button>}
           {(status === "noDriver" || status === "needsAdmin") && (
-            <button className="btn primary" onClick={() => api.enableCpuSensors().then(() => setMsg(t("Confirme a janela do Windows; o kMonitor vai reabrir como administrador."))).catch((e) => setMsg(String(e) === "nodriver" ? t("Instale o PawnIO primeiro e depois clique em Ativar.") : String(e)))}>
+            <button className="btn primary" onClick={() => api.enableCpuSensors().then(() => setMsg(t("Confirme a janela do Windows; o kMonitor vai reabrir como administrador."))).catch((e) => setMsg(String(e) === "nodriver" ? t("Instale o PawnIO primeiro e depois clique em Ativar.") : String(e) === "unprotected" ? t("Por segurança, o modo administrador só funciona com o kMonitor instalado pelo instalador (em Arquivos de Programas).") : String(e)))}>
               <LuShieldCheck size={15} /> {t("Ativar")}
             </button>
           )}

@@ -173,6 +173,8 @@ export const EN: Dict = {
   "Instale o PawnIO primeiro e depois clique em Ativar.": "Install PawnIO first, then click Turn on.",
   "Modo administrador desligado. Vale a partir da próxima vez que o kMonitor abrir.": "Administrator mode is off. It takes effect the next time kMonitor opens.",
   "Não consegui remover a tarefa agendada.": "Couldn't remove the scheduled task.",
+  "Por segurança, o modo administrador só funciona com o kMonitor instalado pelo instalador (em Arquivos de Programas).":
+    "For safety, administrator mode only works with kMonitor installed by its installer (in Program Files).",
   "Desativar": "Turn off",
   "Bandeja e mini monitor": "Tray and mini monitor",
   "Ícone da bandeja": "Tray icon",
@@ -426,6 +428,8 @@ export const ES: Dict = {
   "Instale o PawnIO primeiro e depois clique em Ativar.": "Instala PawnIO primero y luego haz clic en Activar.",
   "Modo administrador desligado. Vale a partir da próxima vez que o kMonitor abrir.": "Modo administrador desactivado. Vale a partir de la próxima vez que se abra kMonitor.",
   "Não consegui remover a tarefa agendada.": "No se pudo eliminar la tarea programada.",
+  "Por segurança, o modo administrador só funciona com o kMonitor instalado pelo instalador (em Arquivos de Programas).":
+    "Por seguridad, el modo administrador solo funciona con kMonitor instalado por su instalador (en Archivos de programa).",
   "Desativar": "Desactivar",
   "Bandeja e mini monitor": "Bandeja y mini monitor",
   "Ícone da bandeja": "Ícono de la bandeja",

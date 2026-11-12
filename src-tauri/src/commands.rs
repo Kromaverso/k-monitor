@@ -41,7 +41,7 @@ pub fn initial(app: AppHandle, s: S) -> Initial {
         autostart: if elevate::task_exists() { elevate::task_enabled() } else { app.autolaunch().is_enabled().unwrap_or(false) },
         api_port: crate::server::PORT,
         elevated: elevate::is_elevated(),
-        admin_mode: elevate::task_exists(),
+        admin_mode: elevate::task_exists() && elevate::task_points_here(),
         pawnio: cputemp::installed(),
     }
 }

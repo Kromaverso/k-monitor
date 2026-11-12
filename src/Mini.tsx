@@ -54,7 +54,7 @@ export default function Mini() {
           <span><i style={{ background: "var(--gpu)" }} />GPU</span>
           <span className="faint" style={{ marginLeft: "auto" }}>VRAM {g ? `${fmt.bytes(g.vramUsed)} / ${fmt.bytes(g.vramTotal, 0)}` : "—"}</span>
         </div>
-        <Area height={62} series={[{ values: hist.map((p) => p.gpu), color: "#bf5af2" }, { values: hist.map((p) => p.cpu), color: "#64d2ff" }]} />
+        <Area height={62} series={[{ values: hist.map((p) => p.gpu), color: "#30d158" }, { values: hist.map((p) => p.cpu), color: "#64d2ff" }]} />
       </div>
 
       <div className="mini-card mini-cats num" style={{ flex: 1 }}>

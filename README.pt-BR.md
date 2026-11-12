@@ -44,9 +44,11 @@ npm run tauri build    # gera o instalador em src-tauri/target/release/bundle/ns
 
 O Windows não entrega a temperatura nem o consumo de processadores Ryzen a programas comuns. O kMonitor usa o [PawnIO](https://pawnio.eu), um driver gratuito, open source e assinado (o mesmo do LibreHardwareMonitor). O instalador do kMonitor oferece instalá-lo. Depois, em **Ajustes → Sensores da CPU → Ativar**, o Windows pede permissão uma vez e o kMonitor passa a iniciar como administrador por uma tarefa agendada.
 
+Por segurança, essa tarefa só roda o kMonitor instalado em `Arquivos de Programas`, pasta que só administradores alteram. O instalador coloca o app lá (pedindo administrador uma vez).
+
 ## Onde ficam os dados
 
-Tudo fica no seu PC, em `%APPDATA%\com.kromaverso.kmonitor`: configurações, categorias, specs e o histórico de energia (`energy.json`, hora a hora, cerca de 1 MB por ano). Nada é enviado para a internet.
+Tudo fica no seu PC, em `%APPDATA%\com.kromaverso.kmonitor`: configurações, categorias, specs e o histórico de energia (`energy.json`, hora a hora, cerca de 1 MB por ano). Nada é enviado para a internet. A API local do Stream Deck só responde a programas deste PC e recusa pedidos de navegadores.
 
 Os detalhes técnicos (como a energia é dividida, a API local, a estrutura do código) estão no [README em inglês](README.md).
 

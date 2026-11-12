@@ -86,8 +86,8 @@ export default function Overview({ m, go }: { m: Monitor; go: (p: "processes" | 
           </span>
         </h3>
         <Area height={150} series={[
-          { values: hist.map((p) => p.mem), color: "#30d158" },
-          { values: hist.map((p) => p.gpu), color: "#bf5af2" },
+          { values: hist.map((p) => p.mem), color: "#d1d1d6" },
+          { values: hist.map((p) => p.gpu), color: "#30d158" },
           { values: hist.map((p) => p.cpu), color: "#64d2ff" },
         ]} />
       </section>
@@ -98,7 +98,7 @@ export default function Overview({ m, go }: { m: Monitor; go: (p: "processes" | 
           <div className="cores num">
             {s.cpu.cores.map((v, i) => (
               <div className="core" key={i} title={`Thread ${i}: ${Math.round(v)}%`}>
-                <i style={{ height: `${Math.max(3, v)}%`, background: loadColor(v, "linear-gradient(180deg, #64d2ff, #2f7fff)") }} />
+                <i style={{ height: `${Math.max(3, v)}%`, background: loadColor(v, "var(--cpu)") }} />
                 <span>{Math.round(v)}</span>
               </div>
             ))}

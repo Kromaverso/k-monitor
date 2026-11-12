@@ -7,10 +7,10 @@ const now = Date.now();
 const wave = (i: number, base: number, amp: number, f: number) => Math.max(0, base + amp * Math.sin(i / f) + amp * 0.5 * Math.sin(i / (f * 0.37)));
 
 const categories = [
-  ["unreal", "Unreal Engine", "#a78bfa", "unreal"], ["unity", "Unity", "#e5e7eb", "unity"], ["godot", "Godot", "#60a5fa", "godot"],
+  ["unreal", "Unreal Engine", "#0a84ff", "unreal"], ["unity", "Unity", "#e5e7eb", "unity"], ["godot", "Godot", "#60a5fa", "godot"],
   ["blender", "Blender", "#fb923c", "blender"], ["design", "Design & Criação", "#ff375f", "palette"], ["adobe", "Adobe", "#f87171", "adobe"],
   ["ai", "IA & Assistentes", "#fbbf24", "ai"], ["dev", "Desenvolvimento", "#34d399", "dev"], ["browsers", "Navegadores", "#38bdf8", "browser"],
-  ["productivity", "Produtividade", "#ffd60a", "shapes"], ["comms", "Comunicação", "#818cf8", "chat"], ["media", "Mídia & Streaming", "#f472b6", "media"],
+  ["productivity", "Produtividade", "#ffd60a", "shapes"], ["comms", "Comunicação", "#5ac8fa", "chat"], ["media", "Mídia & Streaming", "#f472b6", "media"],
   ["launchers", "Lojas de jogos", "#94a3b8", "store"], ["games", "Jogos", "#4ade80", "game"], ["drivers", "Drivers & Utilitários", "#a3a3a3", "chip"],
   ["system", "Windows", "#64748b", "windows"],
 ].map(([id, name, color, icon]) => ({ id, name, color, icon, patterns: id === "unreal" ? ["unreal*", "shadercompileworker*", "\\engine\\binaries\\"] : id === "browsers" ? ["chrome", "msedge", "firefox"] : [`${id}*`] }));
@@ -77,30 +77,30 @@ function energy(): Any {
   return { days, hours, monthCategories: cats, todayCategories: Object.fromEntries(Object.entries(cats).map(([k, v]) => [k, v / 11])) };
 }
 
-const specs = {
+export const specs = {
   computer: { name: "DESKTOP", maker: "ASUS", model: "System Product Name" },
-  os: { name: "Microsoft Windows 11 Pro", version: "25H2", build: "26200.9711", arch: "64-bit", installed: "2025-08-29", boot: "2026-11-09 10:48" },
+  os: { name: "Microsoft Windows 11 Pro", version: "24H2", build: "26100.4061", arch: "64-bit", installed: "2025-03-14", boot: "2026-11-01 08:30" },
   cpu: { name: "AMD Ryzen 9 9950X3D 16-Core Processor", maker: "AuthenticAMD", cores: 16, threads: 32, maxMhz: 4300, l2Kb: 16384, l3Kb: 131072, socket: "AM5", virtualization: true },
-  board: { maker: "ASUSTeK COMPUTER INC.", product: "TUF GAMING X870-PLUS WIFI", version: "Rev 1.xx", bios: "American Megatrends Inc. 1601", biosDate: "2026-09-12" },
+  board: { maker: "ASUSTeK COMPUTER INC.", product: "TUF GAMING X870-PLUS WIFI", version: "Rev 1.xx", bios: "American Megatrends Inc. 1203", biosDate: "2026-02-20" },
   ram: [
-    { slot: "DIMM 1", bank: "P0 CHANNEL A", maker: "G Skill Intl", part: "F5-6400J3239G32G", bytes: 34359738368, mhz: 6400, configuredMhz: 6400, volts: 1350, type: 34 },
-    { slot: "DIMM 1", bank: "P0 CHANNEL B", maker: "G Skill Intl", part: "F5-6400J3239G32G", bytes: 34359738368, mhz: 6400, configuredMhz: 6400, volts: 1350, type: 34 },
+    { slot: "DIMM 1", bank: "P0 CHANNEL A", maker: "Kingston", part: "KF564C32BBK2-64", bytes: 34359738368, mhz: 6400, configuredMhz: 6400, volts: 1350, type: 34 },
+    { slot: "DIMM 1", bank: "P0 CHANNEL B", maker: "Kingston", part: "KF564C32BBK2-64", bytes: 34359738368, mhz: 6400, configuredMhz: 6400, volts: 1350, type: 34 },
   ],
   ramSlots: 4,
   gpus: [
-    { name: "NVIDIA GeForce RTX 5070 Ti", maker: "NVIDIA", driver: "32.0.16.2101", driverDate: "2026-10-18", vram: 17179869184, mode: "3440x1440 @ 175 Hz" },
-    { name: "AMD Radeon(TM) Graphics", maker: "Advanced Micro Devices, Inc.", driver: "32.0.21045.16010", driverDate: "2026-10-15", vram: 2147483648, mode: "1920x1080 @ 60 Hz" },
+    { name: "NVIDIA GeForce RTX 5070 Ti", maker: "NVIDIA", driver: "32.0.15.7680", driverDate: "2026-08-04", vram: 17179869184, mode: "3440x1440 @ 175 Hz" },
+    { name: "AMD Radeon(TM) Graphics", maker: "Advanced Micro Devices, Inc.", driver: "32.0.12011.1036", driverDate: "2026-07-22", vram: 2147483648, mode: "1920x1080 @ 60 Hz" },
   ],
   disks: [
-    { name: "XPG GAMMIX S70 BLADE", media: "SSD", bus: "NVMe", bytes: 2000398934016, health: "Healthy" },
-    { name: "Corsair MP700 PRO", media: "SSD", bus: "NVMe", bytes: 2000398934016, health: "Healthy" },
+    { name: "Samsung SSD 990 PRO", media: "SSD", bus: "NVMe", bytes: 2000398934016, health: "Healthy" },
+    { name: "WD_BLACK SN850X", media: "SSD", bus: "NVMe", bytes: 2000398934016, health: "Healthy" },
   ],
   volumes: [
     { letter: "C:", label: "Windows", fs: "NTFS", bytes: 2000396169216, free: 812e9 },
     { letter: "D:", label: "Projects", fs: "NTFS", bytes: 2000396169216, free: 1310e9 },
   ],
-  displays: [{ name: "DELL S3422DWG", maker: "DEL", year: 2022 }, { name: "Cintiq 16", maker: "WAC", year: 2021 }],
-  network: [{ name: "Ethernet", desc: "Realtek Gaming 2.5GbE", speed: "2.5 Gbps" }],
+  displays: [{ name: "LG ULTRAGEAR", maker: "GSM", year: 2023 }, { name: "DELL U2723QE", maker: "DEL", year: 2022 }],
+  network: [{ name: "Ethernet", desc: "Ethernet 2.5GbE", speed: "2.5 Gbps" }],
 };
 
 export function installCaptureMocks(lang: string) {

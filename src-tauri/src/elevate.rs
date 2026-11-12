@@ -2,6 +2,10 @@
 //!
 //! Instead of a UAC prompt on every start, kMonitor registers a scheduled task "kMonitor"
 //! that runs it with highest privileges at logon. Creating the task asks for UAC once.
+//!
+//! Security: the task only ever points at a kMonitor.exe under Program Files, which only
+//! administrators can change. A copy in a user-writable folder could be swapped by any
+//! program running as the user, which would then start as administrator at the next logon.
 
 use std::os::windows::process::CommandExt;
 use std::process::Command;
@@ -25,6 +29,49 @@ pub fn is_elevated() -> bool {
         let _ = CloseHandle(token);
         ok && e.TokenIsElevated != 0
     }
+}
+
+/// True when `exe` sits under Program Files, where only administrators can write.
+pub fn exe_protected(exe: &std::path::Path) -> bool {
+    let p = exe.to_string_lossy().to_ascii_lowercase();
+    ["ProgramFiles", "ProgramFiles(x86)", "ProgramW6432"].iter().filter_map(|v| std::env::var(v).ok()).any(|root| {
+        let root = root.to_ascii_lowercase();
+        p.starts_with(&format!("{}\\", root.trim_end_matches('\\')))
+    })
+}
+
+/// The executable the task starts, read from its XML definition.
+pub fn task_target() -> Option<String> {
+    let out = Command::new("schtasks").args(["/Query", "/TN", TASK, "/XML"]).creation_flags(NO_WINDOW).output().ok()?;
+    if !out.status.success() {
+        return None;
+    }
+    // schtasks writes the XML as UTF-16 or UTF-8 depending on the console; handle both.
+    let xml = if out.stdout.len() > 1 && out.stdout[1] == 0 {
+        String::from_utf16_lossy(&out.stdout.chunks_exact(2).map(|c| u16::from_le_bytes([c[0], c[1]])).collect::<Vec<_>>())
+    } else {
+        String::from_utf8_lossy(&out.stdout).into_owned()
+    };
+    let start = xml.find("<Command>")? + "<Command>".len();
+    let end = start + xml[start..].find("</Command>")?;
+    Some(xml[start..end].trim().trim_matches('"').replace("&amp;", "&"))
+}
+
+/// The task exists and starts this very executable.
+pub fn task_points_here() -> bool {
+    let Ok(me) = std::env::current_exe() else { return false };
+    task_target().map(|t| t.eq_ignore_ascii_case(&me.to_string_lossy())).unwrap_or(false)
+}
+
+/// Points the task at this executable (needs to run elevated).
+pub fn retarget_task() -> bool {
+    let Ok(me) = std::env::current_exe() else { return false };
+    Command::new("schtasks")
+        .args(["/Change", "/TN", TASK, "/TR", &format!("\"{}\" --tray", me.to_string_lossy())])
+        .creation_flags(NO_WINDOW)
+        .output()
+        .map(|o| o.status.success())
+        .unwrap_or(false)
 }
 
 pub fn task_exists() -> bool {
@@ -72,6 +119,10 @@ fn ps_quote(s: &str) -> String {
 /// starts kMonitor elevated. Returns an error if the prompt could not be shown.
 pub fn enable_admin_mode() -> Result<(), String> {
     let exe = std::env::current_exe().map_err(|e| e.to_string())?;
+    // Never give administrator to a copy that a normal program could replace.
+    if !exe_protected(&exe) {
+        return Err("unprotected".into());
+    }
     let exe = exe.to_string_lossy().to_string();
     let user = format!("{}\\{}", std::env::var("USERDOMAIN").unwrap_or_default(), std::env::var("USERNAME").unwrap_or_default());
     let pid = std::process::id();

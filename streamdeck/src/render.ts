@@ -23,14 +23,15 @@ export function setLanguage(lang: string | undefined) {
 }
 
 const CYAN = "#64d2ff";
-const PURPLE = "#bf5af2";
-const GREEN = "#30d158";
+const GPU = "#30d158";
+const RAM = "#d1d1d6";
+const COOL = "#30d158";
 const ORANGE = "#ff9f0a";
 const RED = "#ff453a";
 const FONT = `font-family="Segoe UI Variable Display, Segoe UI, Arial, sans-serif"`;
 
 const load = (v: number, base: string) => (v >= 85 ? RED : v >= 60 ? ORANGE : base);
-const heat = (c: number) => (c >= 85 ? RED : c >= 72 ? ORANGE : c >= 55 ? "#ffd60a" : GREEN);
+const heat = (c: number) => (c >= 85 ? RED : c >= 72 ? ORANGE : c >= 55 ? "#ffd60a" : COOL);
 const esc = (s: string) => s.replace(/[<>&"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" })[c]!);
 
 type Reading = { label: string; value: number | null; min: number; max: number; unit: string; color: string; sub?: string; series?: (number | null)[] };
@@ -38,18 +39,18 @@ type Reading = { label: string; value: number | null; min: number; max: number; 
 function reading(m: Metric, s: Stats): Reading {
   const gb = (b: number) => (b / 1073741824).toFixed(1);
   switch (m) {
-    case "gpu": return { label: "GPU", value: s.gpu.usage, min: 0, max: 100, unit: "%", color: load(s.gpu.usage, PURPLE), sub: s.gpu.temp != null ? `${s.gpu.temp}°C` : undefined, series: s.history.gpu };
+    case "gpu": return { label: "GPU", value: s.gpu.usage, min: 0, max: 100, unit: "%", color: load(s.gpu.usage, GPU), sub: s.gpu.temp != null ? `${s.gpu.temp}°C` : undefined, series: s.history.gpu };
     case "cputemp": return { label: "CPU TEMP", value: s.cpu.temp, min: 25, max: 100, unit: "°", color: heat(s.cpu.temp ?? 0), sub: s.cpu.temp == null ? tx.noSensor : `${Math.round(s.cpu.usage)}% ${tx.load}`, series: s.history.cpuTemp };
     case "gputemp": return { label: "GPU TEMP", value: s.gpu.temp, min: 25, max: 95, unit: "°", color: heat(s.gpu.temp ?? 0), sub: `${Math.round(s.gpu.usage)}% ${tx.load}`, series: s.history.gpuTemp };
-    case "ram": return { label: "RAM", value: (s.mem.used * 100) / s.mem.total, min: 0, max: 100, unit: "%", color: load((s.mem.used * 100) / s.mem.total, GREEN), sub: `${gb(s.mem.used)}/${Math.round(s.mem.total / 1073741824)} GB`, series: s.history.mem };
+    case "ram": return { label: "RAM", value: (s.mem.used * 100) / s.mem.total, min: 0, max: 100, unit: "%", color: load((s.mem.used * 100) / s.mem.total, RAM), sub: `${gb(s.mem.used)}/${Math.round(s.mem.total / 1073741824)} GB`, series: s.history.mem };
     case "vram": {
       const v = s.gpu.vramTotal ? (s.gpu.vramUsed * 100) / s.gpu.vramTotal : 0;
-      return { label: "VRAM", value: v, min: 0, max: 100, unit: "%", color: load(v, PURPLE), sub: `${gb(s.gpu.vramUsed)}/${Math.round(s.gpu.vramTotal / 1073741824)} GB` };
+      return { label: "VRAM", value: v, min: 0, max: 100, unit: "%", color: load(v, GPU), sub: `${gb(s.gpu.vramUsed)}/${Math.round(s.gpu.vramTotal / 1073741824)} GB` };
     }
-    case "gpupower": return { label: "GPU WATTS", value: s.gpu.power, min: 0, max: s.gpu.powerLimit ?? 300, unit: "W", color: load(((s.gpu.power ?? 0) * 100) / (s.gpu.powerLimit ?? 300), PURPLE), sub: s.gpu.clock ? `${s.gpu.clock} MHz` : undefined };
+    case "gpupower": return { label: "GPU WATTS", value: s.gpu.power, min: 0, max: s.gpu.powerLimit ?? 300, unit: "W", color: load(((s.gpu.power ?? 0) * 100) / (s.gpu.powerLimit ?? 300), GPU), sub: s.gpu.clock ? `${s.gpu.clock} MHz` : undefined };
     case "pcpower": {
       const w = s.power?.wall ?? null;
-      return { label: "PC WATTS", value: w, min: 0, max: 700, unit: "W", color: load(((w ?? 0) * 100) / 700, GREEN), sub: s.power ? `CPU ${Math.round(s.power.cpu)} · GPU ${Math.round(s.power.gpu)}` : undefined };
+      return { label: "PC WATTS", value: w, min: 0, max: 700, unit: "W", color: load(((w ?? 0) * 100) / 700, RAM), sub: s.power ? `CPU ${Math.round(s.power.cpu)} · GPU ${Math.round(s.power.gpu)}` : undefined };
     }
     default: return { label: "CPU", value: s.cpu.usage, min: 0, max: 100, unit: "%", color: load(s.cpu.usage, CYAN), sub: s.cpu.temp != null ? `${Math.round(s.cpu.temp)}°C` : `${(s.cpu.mhz / 1000).toFixed(1)} GHz`, series: s.history.cpu };
   }
@@ -131,7 +132,7 @@ export function render(settings: Settings, s: Stats | null): string {
   if (metric === "temps") {
     const c = reading("cputemp", s);
     const g = reading("gputemp", s);
-    return duo({ ...c, color: c.value == null ? "#555" : CYAN }, { ...g, color: PURPLE }, label || "TEMPS");
+    return duo({ ...c, color: c.value == null ? "#555" : CYAN }, { ...g, color: GPU }, label || "TEMPS");
   }
   const r = reading(metric, s);
   return settings.style === "graph" && r.series ? graph(r, label) : gauge(r, label);

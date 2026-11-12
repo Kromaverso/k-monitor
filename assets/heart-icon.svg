@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!-- kHeart style: full square, one-hue vertical gradient, flat white glyph with round caps. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#04291f"/>
+      <stop offset=".55" stop-color="#0b7a52"/>
+      <stop offset="1" stop-color="#3fe3a2"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <g fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round">
+    <!-- gauge: 240° arc open at the bottom -->
+    <path d="M 252 710 A 300 300 0 1 1 772 710" stroke-width="88"/>
+    <!-- needle -->
+    <path d="M 512 560 L 630 442" stroke-width="72"/>
+  </g>
+  <circle cx="512" cy="560" r="70" fill="#ffffff"/>
+</svg>

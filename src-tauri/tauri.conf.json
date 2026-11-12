@@ -78,7 +78,8 @@
           "English",
           "Spanish"
         ],
-        "displayLanguageSelector": false
+        "displayLanguageSelector": false,
+        "installMode": "perMachine"
       }
     }
   }

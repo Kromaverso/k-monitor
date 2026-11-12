@@ -144,7 +144,7 @@ export default function Energy({ m }: { m: Monitor }) {
       <section className="card">
         <h3>{t("Últimos 30 dias")}<span className="right">{t("{kwh} · {brl} no ano", { kwh: kwh(data.yearSum.wh), brl: brl((data.yearSum.wh / 1000) * price) })}</span></h3>
         <Bars
-          color="linear-gradient(180deg, #64d2ff, #5e8bff)"
+          color="var(--cpu)"
           items={data.last30.map(({ key, b }) => ({ key, value: b?.wh ?? 0, dim: key === today(), tip: `${new Date(key + "T12:00").toLocaleDateString(locale())}: ${kwh(b?.wh ?? 0)} · ${brl(((b?.wh ?? 0) / 1000) * price)}` }))}
           label={(k) => (k.endsWith("-01") || k === data.last30[0].key || k === today() ? k.slice(8) + "/" + k.slice(5, 7) : k.slice(8))}
         />
@@ -155,7 +155,7 @@ export default function Energy({ m }: { m: Monitor }) {
           <h3>{t("Hoje, hora a hora")}</h3>
           <Bars
             height={110}
-            color="linear-gradient(180deg, #bf5af2, #5e5ce6)"
+            color="var(--accent)"
             items={data.todayHours.map(({ h, b }) => ({ key: String(h), value: b?.wh ?? 0, tip: `${h}h: ${Math.round(b?.wh ?? 0)} Wh · ${brl(((b?.wh ?? 0) / 1000) * price)}` }))}
             label={(k) => (Number(k) % 3 === 0 ? `${k}h` : "")}
           />

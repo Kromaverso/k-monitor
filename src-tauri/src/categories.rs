@@ -31,7 +31,7 @@ fn cat(id: &str, name: &str, color: &str, icon: &str, patterns: &[&str]) -> Cate
 
 pub fn defaults() -> Vec<Category> {
     vec![
-        cat("unreal", "Unreal Engine", "#a78bfa", "unreal", &[
+        cat("unreal", "Unreal Engine", "#0a84ff", "unreal", &[
             "unreal*", "ue4editor*", "ue5editor*", "shadercompileworker*", "crashreportclient*",
             "livecodingconsole*", "zenserver*", "zen", "unrealtraceserver*", "unrealbuildtool*", "unrealpak*",
             r"\engine\binaries\", r"\epic games\ue_",
@@ -61,7 +61,7 @@ pub fn defaults() -> Vec<Category> {
             "notion*", "obsidian", "everything*", "googledrivefs", "onedrive*", "dropbox*", "p4v", "p4merge", "p4admin", "p4d",
             "1password*", "todo", "outlook", "olk", "winword", "excel", "powerpnt", "onenote*", "snippingtool",
         ]),
-        cat("comms", "Comunicação", "#818cf8", "chat", &[
+        cat("comms", "Comunicação", "#5ac8fa", "chat", &[
             "discord*", "slack", "teams", "ms-teams", "whatsapp*", "telegram", "zoom", "signal", "phoneexperiencehost", "crossdeviceservice",
         ]),
         cat("media", "Mídia & Streaming", "#f472b6", "media", &["spotify", "vlc", "obs64", "obs*", "streamlabs*", "mpc-hc*", "potplayer*", "fxsound", "wallpaper32", "wallpaper64", r"\wallpaper_engine\"]),

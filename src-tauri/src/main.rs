@@ -38,9 +38,18 @@ fn main() {
     if focus_running_instance() {
         return;
     }
-    // Admin mode: a normal start (Start menu, Stream Deck) hands over to the elevated task.
-    if !elevate::is_elevated() && elevate::task_exists() && elevate::run_task() {
-        return;
+    // Admin mode: a normal start (Start menu, Stream Deck) hands over to the elevated task,
+    // but only if the task starts this same, admin-protected executable.
+    if elevate::task_exists() {
+        let me = std::env::current_exe().unwrap_or_default();
+        if elevate::task_points_here() && elevate::exe_protected(&me) {
+            if !elevate::is_elevated() && elevate::run_task() {
+                return;
+            }
+        } else if elevate::is_elevated() && elevate::exe_protected(&me) {
+            // Moved to Program Files (or reinstalled): point the task here.
+            elevate::retarget_task();
+        }
     }
     tauri::Builder::default()
         .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| shell::show_main(app)))
@@ -49,6 +58,14 @@ fn main() {
             let dir = app.path().app_data_dir()?;
             std::fs::create_dir_all(&dir)?;
             specs::refresh_in_background(dir.clone());
+            // Re-save the Run entry so it points at this copy (it moved to Program Files).
+            {
+                use tauri_plugin_autostart::ManagerExt;
+                let auto = app.autolaunch();
+                if auto.is_enabled().unwrap_or(false) {
+                    let _ = auto.enable();
+                }
+            }
             let shared = Arc::new(state::Shared::load(dir));
             app.manage(shared.clone());
 
