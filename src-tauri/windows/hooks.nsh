@@ -12,7 +12,8 @@
 
 !macro NSIS_HOOK_POSTINSTALL
   ; Admin mode: point the logon task (if any) at this protected copy.
-  nsExec::Exec 'schtasks /Change /TN kMonitor /TR "\"$INSTDIR\${MAINBINARYNAME}.exe\" --tray"'
+  ; Set-ScheduledTask rather than schtasks /Change, which trips over nested quotes.
+  nsExec::Exec `powershell.exe -NoProfile -NonInteractive -Command "if (Get-ScheduledTask -TaskName 'kMonitor' -ErrorAction SilentlyContinue) { Set-ScheduledTask -TaskName 'kMonitor' -Action (New-ScheduledTaskAction -Execute '$INSTDIR\${MAINBINARYNAME}.exe' -Argument '--tray') | Out-Null }"`
   Pop $0
 
   ; Offer PawnIO, the signed driver used for CPU temperature and power, if it's not there yet.

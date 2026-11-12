@@ -66,8 +66,12 @@ pub fn task_points_here() -> bool {
 /// Points the task at this executable (needs to run elevated).
 pub fn retarget_task() -> bool {
     let Ok(me) = std::env::current_exe() else { return false };
-    Command::new("schtasks")
-        .args(["/Change", "/TN", TASK, "/TR", &format!("\"{}\" --tray", me.to_string_lossy())])
+    let cmd = format!(
+        "Set-ScheduledTask -TaskName '{TASK}' -Action (New-ScheduledTaskAction -Execute {} -Argument '--tray') | Out-Null",
+        ps_quote(&me.to_string_lossy())
+    );
+    Command::new("powershell.exe")
+        .args(["-NoProfile", "-NonInteractive", "-Command", &cmd])
         .creation_flags(NO_WINDOW)
         .output()
         .map(|o| o.status.success())
