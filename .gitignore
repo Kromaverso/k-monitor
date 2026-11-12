@@ -1,0 +1,23 @@
+# dependencies and build output
+node_modules/
+dist/
+src-tauri/target/
+src-tauri/gen/
+streamdeck/com.kromaverso.kmonitor.sdPlugin/bin/
+streamdeck/scripts/render.mjs
+release/
+*.streamDeckPlugin
+
+# third-party binary, downloaded and checked by scripts/fetch-pawnio.mjs
+src-tauri/pawnio/PawnIO_setup.exe
+
+# local files
+.env
+.env.*
+*.log
+*.pem
+*.key
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

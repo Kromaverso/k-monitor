@@ -1,0 +1,9 @@
+{
+  "name": "kMonitor",
+  "kind": "custom",
+  "cwd": ".",
+  "install": "npm install",
+  "installCheck": "node_modules",
+  "run": "npm run tauri dev",
+  "open": "none"
+}

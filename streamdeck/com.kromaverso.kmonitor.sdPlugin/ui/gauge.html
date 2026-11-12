@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<style>
+  body { margin: 0; padding: 8px 6px; font: 13px "Segoe UI", sans-serif; color: #d8d8d8; background: transparent; }
+  .row { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; }
+  .row > span { width: 92px; flex: none; text-align: right; color: #969696; }
+  select, input { flex: 1; height: 26px; padding: 0 6px; color: #d8d8d8; background: #3d3d3d; border: 0; border-radius: 3px; font: inherit; outline: none; }
+  select:focus, input:focus { box-shadow: 0 0 0 1px #6f6f6f; }
+  .hint { margin: 2px 0 0 102px; font-size: 11.5px; color: #8a8a8a; line-height: 1.4; }
+</style>
+</head>
+<body>
+  <div class="row"><span data-t="show">Mostrar</span>
+    <select id="metric">
+      <option value="cpu" data-t="m_cpu">Uso da CPU</option>
+      <option value="gpu" data-t="m_gpu">Uso da GPU</option>
+      <option value="cputemp" data-t="m_cputemp">Temperatura da CPU</option>
+      <option value="gputemp" data-t="m_gputemp">Temperatura da GPU</option>
+      <option value="duo" data-t="m_duo">CPU + GPU (dois anéis)</option>
+      <option value="temps" data-t="m_temps">Temperaturas CPU + GPU</option>
+      <option value="ram" data-t="m_ram">Memória RAM</option>
+      <option value="vram" data-t="m_vram">Memória de vídeo</option>
+      <option value="gpupower" data-t="m_gpupower">Consumo da GPU (W)</option>
+      <option value="pcpower" data-t="m_pcpower">Consumo do PC na tomada (W)</option>
+    </select>
+  </div>
+  <div class="row"><span data-t="style">Estilo</span>
+    <select id="style">
+      <option value="gauge" data-t="s_gauge">Gauge</option>
+      <option value="graph" data-t="s_graph">Gráfico (últimos 40 s)</option>
+    </select>
+  </div>
+  <div class="row"><span data-t="label">Legenda</span><input id="label" data-tp="auto" placeholder="automática" maxlength="12" /></div>
+  <div class="row"><span data-t="press">Ao apertar</span>
+    <select id="press">
+      <option value="open" data-t="p_open">Abrir o kMonitor</option>
+      <option value="mini" data-t="p_mini">Abrir o mini monitor</option>
+      <option value="none" data-t="p_none">Nada</option>
+    </select>
+  </div>
+  <p class="hint" data-t="hint">Os dados vêm do kMonitor aberto neste PC (pode ficar só na bandeja).</p>
+<script>
+  const T = {
+    en: { show: "Show", style: "Style", label: "Caption", press: "On press", auto: "automatic",
+      hint: "Data comes from kMonitor running on this PC (it can stay in the tray).",
+      m_cpu: "CPU load", m_gpu: "GPU load", m_cputemp: "CPU temperature", m_gputemp: "GPU temperature",
+      m_duo: "CPU + GPU (two rings)", m_temps: "CPU + GPU temperatures", m_ram: "RAM", m_vram: "Video memory",
+      m_gpupower: "GPU power (W)", m_pcpower: "PC power at the wall (W)", s_gauge: "Gauge", s_graph: "Graph (last 40 s)",
+      p_open: "Open kMonitor", p_mini: "Open the mini monitor", p_none: "Nothing" },
+    es: { show: "Mostrar", style: "Estilo", label: "Leyenda", press: "Al pulsar", auto: "automática",
+      hint: "Los datos vienen de kMonitor abierto en este PC (puede quedarse en la bandeja).",
+      m_cpu: "Uso de la CPU", m_gpu: "Uso de la GPU", m_cputemp: "Temperatura de la CPU", m_gputemp: "Temperatura de la GPU",
+      m_duo: "CPU + GPU (dos anillos)", m_temps: "Temperaturas CPU + GPU", m_ram: "Memoria RAM", m_vram: "Memoria de video",
+      m_gpupower: "Consumo de la GPU (W)", m_pcpower: "Consumo del PC en el enchufe (W)", s_gauge: "Indicador", s_graph: "Gráfico (últimos 40 s)",
+      p_open: "Abrir kMonitor", p_mini: "Abrir el mini monitor", p_none: "Nada" },
+  };
+  function translate(lang) {
+    const l = (lang || "en").toLowerCase();
+    if (l.startsWith("pt")) return; // the page is written in Portuguese
+    const d = l.startsWith("es") ? T.es : T.en;
+    document.querySelectorAll("[data-t]").forEach((el) => { if (d[el.dataset.t]) el.textContent = d[el.dataset.t]; });
+    document.querySelectorAll("[data-tp]").forEach((el) => { if (d[el.dataset.tp]) el.placeholder = d[el.dataset.tp]; });
+  }
+  let ws, uuid, settings = {};
+  const ids = ["metric", "style", "label", "press"];
+  function save() {
+    ids.forEach((id) => (settings[id] = document.getElementById(id).value));
+    ws && ws.send(JSON.stringify({ event: "setSettings", context: uuid, payload: settings }));
+  }
+  function connectElgatoStreamDeckSocket(port, inUuid, registerEvent, info, actionInfo) {
+    uuid = inUuid;
+    try { translate(JSON.parse(info).application.language); } catch (e) {}
+    settings = (JSON.parse(actionInfo).payload || {}).settings || {};
+    document.getElementById("metric").value = settings.metric || "cpu";
+    document.getElementById("style").value = settings.style || "gauge";
+    document.getElementById("label").value = settings.label || "";
+    document.getElementById("press").value = settings.press || "open";
+    ws = new WebSocket("ws://127.0.0.1:" + port);
+    ws.onopen = () => ws.send(JSON.stringify({ event: registerEvent, uuid }));
+  }
+  ids.forEach((id) => document.getElementById(id).addEventListener(id === "label" ? "input" : "change", save));
+</script>
+</body>
+</html>

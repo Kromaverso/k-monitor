@@ -1,0 +1,27 @@
+{
+  "Name": "kMonitor",
+  "Version": "0.1.0.0",
+  "Author": "Kromaverso",
+  "Description": "Gauges de uso e temperatura de CPU, GPU e memória direto do kMonitor.",
+  "UUID": "com.kromaverso.kmonitor",
+  "Category": "kMonitor",
+  "CategoryIcon": "imgs/category",
+  "Icon": "imgs/plugin",
+  "CodePath": "bin/plugin.js",
+  "SDKVersion": 2,
+  "Software": { "MinimumVersion": "6.5" },
+  "OS": [{ "Platform": "windows", "MinimumVersion": "10" }],
+  "Nodejs": { "Version": "20", "Debug": "disabled" },
+  "Actions": [
+    {
+      "Name": "Gauge",
+      "UUID": "com.kromaverso.kmonitor.gauge",
+      "Icon": "imgs/action",
+      "Tooltip": "Uso e temperatura de CPU, GPU e memória, ao vivo.",
+      "PropertyInspectorPath": "ui/gauge.html",
+      "Controllers": ["Keypad"],
+      "SupportedInMultiActions": false,
+      "States": [{ "Image": "imgs/key", "ShowTitle": false }]
+    }
+  ]
+}

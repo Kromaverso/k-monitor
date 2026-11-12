@@ -1,0 +1,19 @@
+{
+  "name": "kmonitor-streamdeck",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "preview": "node scripts/preview.mjs"
+  },
+  "dependencies": {
+    "@elgato/streamdeck": "^1.4.1"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "@types/node": "^20.19.43",
+    "esbuild": "^0.25.0",
+    "typescript": "^5"
+  }
+}
