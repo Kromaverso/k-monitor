@@ -28,7 +28,11 @@
 - **Stream Deck:** plugin com gauges de uso, temperatura e consumo nas teclas.
 - **3 idiomas:** português, inglês e espanhol, seguindo o idioma do Windows ou o escolhido em Ajustes.
 
-## Como rodar
+## Instalar
+
+Baixe o [**instalador**](https://github.com/Kromaverso/k-monitor/releases/latest/download/kMonitor_0.1.0_x64-setup.exe) na [última versão](https://github.com/Kromaverso/k-monitor/releases/latest) e execute. Ele instala em Arquivos de Programas (o Windows pede administrador uma vez). O instalador ainda não tem assinatura digital, então o SmartScreen pode avisar: clique em **Mais informações → Executar assim mesmo**. O [plugin do Stream Deck](https://github.com/Kromaverso/k-monitor/releases/latest/download/kMonitor.streamDeckPlugin) está na mesma versão.
+
+## Como rodar o código
 
 Windows 10 ou 11 com [Rust](https://rustup.rs/), [Node.js](https://nodejs.org/) 20+ e o WebView2 (já vem no Windows 11):
 

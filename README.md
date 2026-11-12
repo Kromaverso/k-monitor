@@ -15,7 +15,7 @@
   <img alt="Tauri 2 · Rust" src="https://img.shields.io/badge/built%20with-Tauri%202%20%C2%B7%20Rust-24c8db?style=flat-square&logo=tauri&logoColor=white">
   <img alt="Stream Deck plugin" src="https://img.shields.io/badge/Stream%20Deck-plugin-bf5af2?style=flat-square">
   <img alt="Português · English · Español" src="https://img.shields.io/badge/languages-pt%20%C2%B7%20en%20%C2%B7%20es-30d158?style=flat-square">
-  <img alt="Version 0.1.0" src="https://img.shields.io/badge/version-0.1.0-3a3a3a?style=flat-square">
+  <a href="https://github.com/Kromaverso/k-monitor/releases/latest"><img alt="Download" src="https://img.shields.io/github/v/release/Kromaverso/k-monitor?style=flat-square&label=download&color=0a84ff"></a>
 </p>
 
 <p align="center">
@@ -133,7 +133,9 @@ Everything stays on your PC. The only network listener is the local API for the 
 
 ## Get started
 
-**Install:** run `kMonitor_0.1.0_x64-setup.exe` (build it as below). It installs to `Program Files` (Windows asks for administrator once) and offers to install PawnIO at the end (see below).
+**Install:** download [**kMonitor_0.1.0_x64-setup.exe**](https://github.com/Kromaverso/k-monitor/releases/latest/download/kMonitor_0.1.0_x64-setup.exe) from the [latest release](https://github.com/Kromaverso/k-monitor/releases/latest) and run it. It installs to `Program Files` (Windows asks for administrator once) and offers to install PawnIO at the end (see below). The installer isn't code-signed yet, so SmartScreen may warn you: click **More info → Run anyway**.
+
+The Stream Deck plugin is in the same release: [**kMonitor.streamDeckPlugin**](https://github.com/Kromaverso/k-monitor/releases/latest/download/kMonitor.streamDeckPlugin).
 
 **Build from source** on Windows 10 or 11 with [Rust](https://rustup.rs/), [Node.js](https://nodejs.org/) 20 or newer and the WebView2 runtime (built into Windows 11):
 
