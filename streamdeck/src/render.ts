@@ -77,10 +77,11 @@ function gauge(r: Reading, label: string) {
   const frac = r.value == null ? 0 : (r.value - r.min) / (r.max - r.min);
   const value = r.value == null ? "—" : Math.round(r.value).toString();
   return frame(
-    `<path d="${arc(72, 62, 46, 1)}" fill="none" stroke="#262626" stroke-width="11" stroke-linecap="round"/>
-${r.value == null ? "" : `<path d="${arc(72, 62, 46, frac)}" fill="none" stroke="${r.color}" stroke-width="11" stroke-linecap="round"/>`}
-<text x="72" y="${r.sub ? 68 : 74}" text-anchor="middle" ${FONT} font-size="36" font-weight="700" fill="#fff">${value}<tspan font-size="17" font-weight="600" fill="#bbb" dx="1">${esc(r.unit)}</tspan></text>
-${r.sub ? `<text x="72" y="90" text-anchor="middle" ${FONT} font-size="13" font-weight="600" fill="#8e8e93">${esc(r.sub)}</text>` : ""}`,
+    // The arc's ends sit around y=93, so the small line goes below them, above the label.
+    `<path d="${arc(72, 56, 42, 1)}" fill="none" stroke="#262626" stroke-width="10" stroke-linecap="round"/>
+${r.value == null ? "" : `<path d="${arc(72, 56, 42, frac)}" fill="none" stroke="${r.color}" stroke-width="10" stroke-linecap="round"/>`}
+<text x="72" y="69" text-anchor="middle" ${FONT} font-size="34" font-weight="700" fill="#fff">${value}<tspan font-size="16" font-weight="600" fill="#bbb" dx="1">${esc(r.unit)}</tspan></text>
+${r.sub ? `<text x="72" y="111" text-anchor="middle" ${FONT} font-size="13" font-weight="600" fill="#8e8e93">${esc(r.sub)}</text>` : ""}`,
     label || r.label,
   );
 }
